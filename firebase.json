@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "public": "public",  // Make sure this points to your hosting directory (e.g., 'public')
     "headers": [
       {
         "source": "**/*.@(js|css|html)",
@@ -16,32 +17,11 @@
     "auth": {
       "port": 9099
     },
-    "functions": {
-      "port": 5001
-    },
     "firestore": {
       "port": 8080
     },
-    "database": {
-      "port": 9000
-    },
     "hosting": {
-      "port": 5000
-    },
-    "pubsub": {
-      "port": 8085
-    },
-    "storage": {
-      "port": 9199
-    },
-    "eventarc": {
-      "port": 9299
-    },
-    "dataconnect": {
-      "port": 9399
-    },
-    "tasks": {
-      "port": 9499
+      "port": 5001
     },
     "ui": {
       "enabled": true
