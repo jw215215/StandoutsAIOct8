@@ -1,6 +1,12 @@
 {
   "hosting": {
-    "public": "docs",  // Updated to point to the 'docs' directory
+    "public": "docs",  // Make sure this points to your docs directory
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
     "headers": [
       {
         "source": "**/*.@(js|css|html)",
@@ -23,7 +29,7 @@
     "hosting": {
       "port": 5001
     },
-      "ui": {
+    "ui": {
       "enabled": true
     },
     "singleProjectMode": true
