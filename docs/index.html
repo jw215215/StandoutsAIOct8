@@ -1,4 +1,4 @@
-<!-- login.html -->
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +8,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script> <!-- Ensure this points to the correct path -->
 </head>
 <body>
     <h1>Standouts.ai - Login</h1>
@@ -22,16 +23,6 @@
     </div>
 
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-    apiKey: process.env.FIREBASE_API_KEY,
-    authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.FIREBASE_PROJECT_ID,
-    storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.FIREBASE_APP_ID,
-};
-
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
@@ -48,10 +39,9 @@
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 console.log("User logged in:", userCredential.user);
                 document.getElementById('message').textContent = "Login successful!";
-                
-// Redirect to profile page after successful login or signup
-window.location.href = 'profile.html';
 
+                // Redirect to profile page after successful login
+                window.location.href = 'profile.html'; // Ensure this is the correct filename
             } catch (error) {
                 // Check if error is related to invalid credentials (possible user not found)
                 if (error.code === 'auth/invalid-login-credentials' || error.code === 'auth/user-not-found') {
@@ -72,11 +62,10 @@ window.location.href = 'profile.html';
                             jobhistory: []  // Placeholder for job history
                         });
 
-                        document.getElementById('message').textContent = "Account created! Redirecting to newsfeed...";
+                        document.getElementById('message').textContent = "Account created! Redirecting to profile...";
                         
-                        // Redirect to newsfeed page after successful account creation
-                        window.location.href = 'newsfeed.html';
-
+                        // Redirect to profile page after successful account creation
+                        window.location.href = 'profile.html';
                     } catch (signupError) {
                         console.error("Error creating user:", signupError.message);
                         document.getElementById('message').textContent = signupError.message;
