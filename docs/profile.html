@@ -23,7 +23,7 @@
         }
         .editable {
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 10px; /* Reduced padding to 10px */
             width: 100%;
             background-color: #f0f0f0;
             color: grey;
@@ -31,7 +31,7 @@
         }
         input, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 10px; /* Reduced padding to 10px */
         }
         input:focus, textarea:focus {
             background-color: white;
@@ -72,7 +72,7 @@
         </div>
         <div class="field-group">
             <label class="field-label" for="description">Job Description</label>
-            <textarea id="description" class="editable" rows="3">Describe your Job experience</textarea>
+            <textarea id="description" class="editable" rows="3">Describe your job experience</textarea>
         </div>
         <div class="field-group">
             <label class="field-label" for="startdate">Start Date</label>
@@ -118,7 +118,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
-    <script src="firebase-config.js"></script>
+    <script src="firebase-config.js"></script> <!-- Ensure this file handles the API keys correctly -->
     <script>
         let userId;
         auth.onAuthStateChanged(async (user) => {
