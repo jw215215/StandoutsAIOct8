@@ -1,0 +1,7 @@
+{
+    "files.autoSave": "afterDelay",
+    "triggerTaskOnSave.tasks": {
+        "public/index.html": "Test Task",  // Change to target a specific file for testing
+        "public/profile.html": "Test Task"
+    }
+}

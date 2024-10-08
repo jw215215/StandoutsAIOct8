@@ -1,0 +1,99 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login to Standouts.ai</title>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <h1>Standouts.ai - Login</h1>
+    <div id="login-container">
+        <!-- Login Form -->
+        <form id="loginForm">
+            <input type="email" id="email" placeholder="Email" required><br>
+            <input type="password" id="password" placeholder="Password" required><br>
+            <button type="submit">Submit</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyB9Bq2GWV6siNaBKc25i2vuolbjH1xqFkI",
+            authDomain: "standoutsv1.firebaseapp.com",
+            projectId: "standoutsv1",
+            storageBucket: "standoutsv1.appspot.com",
+            messagingSenderId: "1094418681842",
+            appId: "1:1094418681842:web:ba8d6ded02a8f1660d256b",
+            measurementId: "G-ZW08B90T45"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Handle login and signup
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                // Try to log in the user
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                console.log("User logged in:", userCredential.user);
+                document.getElementById('message').textContent = "Login successful!";
+                
+// Redirect to profile page after successful login or signup
+window.location.href = 'profile.html';
+
+            } catch (error) {
+                // Check if error is related to invalid credentials (possible user not found)
+                if (error.code === 'auth/invalid-login-credentials' || error.code === 'auth/user-not-found') {
+                    try {
+                        // Create a new user if no user exists
+                        const newUserCredential = await auth.createUserWithEmailAndPassword(email, password);
+                        console.log("New user created:", newUserCredential.user);
+
+                        // Store user information in Firestore
+                        await db.collection('users').doc(newUserCredential.user.uid).set({
+                            emailusername: email,
+                            password: password,  // You might want to hash the password instead of storing it directly
+                            userrealname: "",  // Placeholder for real name, to be filled later
+                            userlocation: "",  // Placeholder for location
+                            professionalhistory: "",  // Placeholder for history
+                            education: "",  // Placeholder for education
+                            skills: "",  // Placeholder for skills
+                            jobhistory: []  // Placeholder for job history
+                        });
+
+                        document.getElementById('message').textContent = "Account created! Redirecting to newsfeed...";
+                        
+                        // Redirect to newsfeed page after successful account creation
+                        window.location.href = 'newsfeed.html';
+
+                    } catch (signupError) {
+                        console.error("Error creating user:", signupError.message);
+                        document.getElementById('message').textContent = signupError.message;
+                    }
+                } 
+                // Handle incorrect password
+                else if (error.code === 'auth/wrong-password') {
+                    document.getElementById('message').textContent = "Incorrect password!";
+                } 
+                // Handle other errors
+                else {
+                    console.error("Firebase error:", error.message);
+                    document.getElementById('message').textContent = error.message;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

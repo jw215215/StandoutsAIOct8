@@ -1,0 +1,214 @@
+<!-- profile.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Your Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center; /* Center the form on the page */
+        }
+        #profile-form {
+            width: 60%; /* Limit form width to 60% of the page */
+        }
+        .field-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .field-label {
+            width: 150px;
+            font-weight: bold;
+        }
+        .editable {
+            border: 1px solid #ccc;
+            padding: 10px;
+            width: 100%;
+            background-color: #f0f0f0;
+            color: grey;
+            cursor: pointer;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+        }
+        input:focus, textarea:focus {
+            background-color: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="profile-form">
+        <h1>Profile Page NEW</h1>
+        <!-- UserRealName -->
+        <div class="field-group">
+            <label class="field-label" for="userrealname">Your Name</label>
+            <input type="text" id="userrealname" class="editable" value="Your Name">
+        </div>
+
+        <!-- UserLocation -->
+        <div class="field-group">
+            <label class="field-label" for="userlocation">Location</label>
+            <input type="text" id="userlocation" class="editable" value="Location">
+        </div>
+
+        <!-- AboutYou -->
+        <div class="field-group">
+            <label class="field-label" for="aboutyou">About You</label>
+            <textarea id="aboutyou" class="editable" rows="3">About you</textarea>
+        </div>
+
+        <!-- Experience Section -->
+        <h3>Experience</h3>
+        <div class="field-group">
+            <label class="field-label" for="company">Company</label>
+            <input type="text" id="company" class="editable" value="Your most recent company">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="jobtitle">Job Title</label>
+            <input type="text" id="jobtitle" class="editable" value="Your most recent job title">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="description">Job Description</label>
+            <textarea id="description" class="editable" rows="3">Describe your Job experience</textarea>
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="startdate">Start Date</label>
+            <input type="month" id="startdate" class="editable">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="enddate">End Date</label>
+            <input type="month" id="enddate" class="editable">
+        </div>
+
+        <!-- Skills Section -->
+        <h3>Skills</h3>
+        <div class="field-group">
+            <label class="field-label" for="skill1">Skill 1</label>
+            <input type="text" id="skill1" class="editable" value="Skill 1">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="skill2">Skill 2</label>
+            <input type="text" id="skill2" class="editable" value="Skill 2">
+        </div>
+
+        <!-- Education Section -->
+        <h3>Education</h3>
+        <div class="field-group">
+            <label class="field-label" for="school">School</label>
+            <input type="text" id="school" class="editable" value="School">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="degree">Degree</label>
+            <input type="text" id="degree" class="editable" value="Degree">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="edustartdate">Start Date</label>
+            <input type="month" id="edustartdate" class="editable">
+        </div>
+        <div class="field-group">
+            <label class="field-label" for="eduenddate">End Date</label>
+            <input type="month" id="eduenddate" class="editable">
+        </div>
+    </div>
+
+    <!-- Firebase Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script>
+        let userId;
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                userId = user.uid;
+                console.log("Logged in user:", user.email);
+
+                const docRef = db.collection('users').doc(userId);
+                const doc = await docRef.get();
+
+                if (doc.exists) {
+                    const data = doc.data();
+                    populateFields(data);
+                } else {
+                    console.log("No user data found, creating new user document.");
+                    await docRef.set({
+                        userrealname: "Your Name",
+                        userlocation: "Location",
+                        aboutyou: "About you",
+                        company: "Your most recent company",
+                        jobtitle: "Your most recent job title",
+                        description: "Describe your job experience",
+                        startdate: "",
+                        enddate: "",
+                        skills: ["Skill 1", "Skill 2"],
+                        school: "School",
+                        degree: "Degree",
+                        edustartdate: "",
+                        eduenddate: ""
+                    });
+                    console.log("New user document created.");
+                }
+            } else {
+                console.log("No user logged in");
+            }
+        });
+
+        function populateFields(data) {
+            document.getElementById('userrealname').value = data.userrealname || "";
+            document.getElementById('userlocation').value = data.userlocation || "";
+            document.getElementById('aboutyou').value = data.aboutyou || "";
+            document.getElementById('company').value = data.company || "";
+            document.getElementById('jobtitle').value = data.jobtitle || "";
+            document.getElementById('description').value = data.description || "";
+            document.getElementById('startdate').value = data.startdate || "";
+            document.getElementById('enddate').value = data.enddate || "";
+            document.getElementById('skill1').value = data.skills?.[0] || "";
+            document.getElementById('skill2').value = data.skills?.[1] || "";
+            document.getElementById('school').value = data.school || "";
+            document.getElementById('degree').value = data.degree || "";
+            document.getElementById('edustartdate').value = data.edustartdate || "";
+            document.getElementById('eduenddate').value = data.eduenddate || "";
+        }
+
+        document.querySelectorAll('.editable').forEach(field => {
+            field.addEventListener('focus', (e) => {
+                if (e.target.value === e.target.defaultValue || e.target.value === "") {
+                    e.target.value = ''; 
+                }
+                if (e.target.tagName !== 'TEXTAREA') {
+                    e.target.select();
+                }
+            });
+
+            field.addEventListener('blur', (e) => {
+                if (e.target.value === '') {
+                    e.target.value = e.target.defaultValue;
+                } else {
+                    saveField(e.target.id, e.target.value);
+                }
+            });
+        });
+
+        function saveField(id, value) {
+            let updateData = {};
+            if (id.startsWith("skill")) {
+                const skillIndex = parseInt(id.replace('skill', '')) - 1;
+                updateData[`skills.${skillIndex}`] = value;
+            } else {
+                updateData[id] = value;
+            }
+
+            db.collection('users').doc(userId).update(updateData)
+            .then(() => {
+                console.log(`${id} successfully updated!`);
+            })
+            .catch((error) => {
+                console.error(`Error updating ${id}: `, error);
+            });
+        }
+    </script>
+</body>
+</html>

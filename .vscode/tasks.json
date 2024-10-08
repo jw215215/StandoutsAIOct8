@@ -1,0 +1,11 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Test Task",
+        "type": "shell",
+        "command": "echo 'Test Task Triggered'",
+        "problemMatcher": []
+      }
+    ]
+  }
