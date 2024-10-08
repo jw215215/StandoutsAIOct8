@@ -1,12 +1,6 @@
 {
   "hosting": {
-    "public": "docs",  // Make sure this points to your docs directory
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ],
+    "public": "docs",  // Updated to point to your new docs folder
     "headers": [
       {
         "source": "**/*.@(js|css|html)",
